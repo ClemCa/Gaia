@@ -535,9 +535,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45635a9e254e9e247b6ae9cd110726ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 9154215057541871321, guid: 2341400579faa59458d0be60fdb54c0d, type: 3}
   sphereRadius: 5
-  numTreesToSpawn: 12
+  treePrefab: {fileID: 9154215057541871321, guid: 2341400579faa59458d0be60fdb54c0d, type: 3}
+  numTreesToSpawn: 100
+  berryBushPrefab: {fileID: 1439904337943108576, guid: 1f115dd58f3bf824abedeb1063682f91, type: 3}
+  numBerryBushesToSpawn: 50
+  herbivores: {fileID: 5279811246306103102, guid: f5e6a247607d2f941a1dcacfdbc60294, type: 3}
+  numHerbivoresToSpawn: 10
+  carnivorous: {fileID: 7962199819078159310, guid: ef43c07a47f446944adad0f2fc5f6d45, type: 3}
+  numCarnivorousToSpawn: 10
 --- !u!1001 &345631176
 PrefabInstance:
   m_ObjectHideFlags: 0
