@@ -88,6 +88,7 @@ public class Tiler : MonoBehaviour
                 float offset = 0.1f;
                 tiles.Add(new Tile
                 {
+                    data = new Dictionary<string, object>(),
                     coordinates = new Vector2(x, y),
                     center = center,
                 });
