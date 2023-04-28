@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TreeSpawner : MonoBehaviour
 {
-	[SerializeField] private float sphereRadius = 10f;
+	[SerializeField] private Tiler tiler;
+	[SerializeField] private int divisions = 10;
 	[SerializeField] private GameObject treePrefab;
 	[SerializeField] private int numTreesToSpawn = 1;
 	[SerializeField] private GameObject berryBushPrefab;
@@ -13,45 +15,55 @@ public class TreeSpawner : MonoBehaviour
 	[SerializeField] private int numHerbivoresToSpawn = 1;
 	[SerializeField] private GameObject carnivorous;
 	[SerializeField] private int numCarnivorousToSpawn = 1;
-
+	[SerializeField] private string seed;
 	void Start()
 	{
+		#if(UNITY_EDITOR)
+		seed = (seed == "" || seed == null) ? Random.Range(0, 1000000).ToString() : seed;
+		#else
+		seed = Random.Range(0, 1000000).ToString();
+		#endif
+		Randomize(seed);
+	}
+
+	public void Reseed()
+	{
+		seed = Random.Range(0, 1000000).ToString();
+		for(int i = transform.childCount - 1; i >= 0; i--)
+		{
+			Destroy(transform.GetChild(i).gameObject);
+		}
+		Randomize(seed);
+	}
+
+	private void Randomize(string seed)
+	{
+		Random.InitState(seed.GetHashCode());
+		// list of indexes from 0 to divisions * divisions
+		List<int> points = Enumerable.Range(0, divisions * divisions).ToList();
 		for (int i = 0; i < numTreesToSpawn; i++)
 		{
-			// Get a random point on the surface of the sphere
-			Vector3 randomPoint = Random.onUnitSphere * sphereRadius;
-
-			// Instantiate the tree at the random point as a child of the sphere game object
-			GameObject newTree = Instantiate(treePrefab, randomPoint, Quaternion.identity, transform);
-
-			// Make the Y axis of the tree face away from the center of the sphere
-			Vector3 normal = newTree.transform.position - transform.position;
-			Vector3 perpendicular = Vector3.Cross(normal, Vector3.up);
-			newTree.transform.rotation = Quaternion.LookRotation(perpendicular, normal); //CHAT GPT TU PUE J'AI REUSSI TOUT SEUL
+			int randomPoint = points[Random.Range(0, points.Count)];
+			points.Remove(randomPoint);
+			tiler.SpawnTile(randomPoint, treePrefab);
 		}
 		for (int i = 0; i < numBerryBushesToSpawn; i++)
 		{
-			Vector3 randomPoint = Random.onUnitSphere * sphereRadius;
-			GameObject newBush = Instantiate(berryBushPrefab, randomPoint, Quaternion.identity, transform);
-			Vector3 normal = newBush.transform.position - transform.position;
-			Vector3 perpendicular = Vector3.Cross(normal, Vector3.up);
-			newBush.transform.rotation = Quaternion.LookRotation(perpendicular, normal);
+			int randomPoint = points[Random.Range(0, points.Count)];
+			points.Remove(randomPoint);
+			tiler.SpawnTile(randomPoint, berryBushPrefab);
 		}
 		for (int i = 0; i < numHerbivoresToSpawn; i++)
 		{
-			Vector3 randomPoint = Random.onUnitSphere * sphereRadius;
-			GameObject newHerbivores = Instantiate(herbivores, randomPoint, Quaternion.identity, transform);
-			Vector3 normal = newHerbivores.transform.position - transform.position;
-			Vector3 perpendicular = Vector3.Cross(normal, Vector3.up);
-			newHerbivores.transform.rotation = Quaternion.LookRotation(perpendicular, normal);
+			int randomPoint = points[Random.Range(0, points.Count)];
+			points.Remove(randomPoint);
+			tiler.SpawnTile(randomPoint, herbivores);
 		}
 		for (int i = 0; i < numCarnivorousToSpawn; i++)
 		{
-			Vector3 randomPoint = Random.onUnitSphere * sphereRadius;
-			GameObject newCarnivorous = Instantiate(carnivorous, randomPoint, Quaternion.identity, transform);
-			Vector3 normal = newCarnivorous.transform.position - transform.position;
-			Vector3 perpendicular = Vector3.Cross(normal, Vector3.up);
-			newCarnivorous.transform.rotation = Quaternion.LookRotation(perpendicular, normal);
+			int randomPoint = points[Random.Range(0, points.Count)];
+			points.Remove(randomPoint);
+			tiler.SpawnTile(randomPoint, carnivorous);
 		}
 	}
 }
