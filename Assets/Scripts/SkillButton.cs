@@ -83,6 +83,7 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if(majorCoroutineRunning && isHovered)
         {
             StartCoroutine(ResizeRoutine(hoverSize, hoverDuration));
+            StartCoroutine(FadeRoutine(1));
         }
         majorCoroutineRunning = false;
     }
@@ -100,7 +101,7 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         if(targetAlpha == 1)
             description.gameObject.SetActive(true);
-        if(targetAlpha == 0)
+        if(description.alpha == 0 || description.alpha == 1)
             yield return new WaitForSeconds(descriptionFadeDelay);
         float t = 0;
         float fromAlpha = description.alpha;

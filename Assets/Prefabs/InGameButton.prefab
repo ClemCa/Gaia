@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_enableAutoSizing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1680720957151957211, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3790463897958690041, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 31a250f241d32d84f877771fc64086cf, type: 3}

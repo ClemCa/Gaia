@@ -150,6 +150,11 @@ public class MainMenu : MonoBehaviour
         {
             button.Shrink();
         }
+        var neutralShrinkables = GetComponentsInChildren<NeutralShrinkable>();
+        foreach (var button in neutralShrinkables)
+        {
+            button.Shrink();
+        }
     }
 
     private void GrowGameButtons()
@@ -161,6 +166,11 @@ public class MainMenu : MonoBehaviour
         }
         var skillButtons = GetComponentsInChildren<SkillButton>();
         foreach (var button in skillButtons)
+        {
+            button.Grow();
+        }
+        var neutralShrinkables = GetComponentsInChildren<NeutralShrinkable>();
+        foreach (var button in neutralShrinkables)
         {
             button.Grow();
         }

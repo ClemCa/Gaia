@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlanetRotation : MonoBehaviour
 {
-    [SerializeField] private bool enabled = true;
+    [SerializeField] private new bool enabled = true;
     [SerializeField] private Transform planet;
     [SerializeField] private float speed = 10f;
     [SerializeField] private float inertia = 0.9f;
