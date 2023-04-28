@@ -13,10 +13,52 @@ public class Tiler : MonoBehaviour
     {
         public Vector2 coordinates;
         public Vector3 center;
+        public Dictionary<string, object> data;
+        public object this[string key]
+        {
+            get
+            {
+                return data[key];
+            }
+            set
+            {
+                data[key] = value;
+            }
+        }
+        // default constructor
+        public Tile(bool empty = true)
+        {
+            coordinates = Vector2.zero;
+            center = Vector3.zero;
+            data = new Dictionary<string, object>();
+        }
     }
 
     private List<Tile> tiles = new List<Tile>();
 
+    public Tile this[int index]
+    {
+        get
+        {
+            return tiles[index];
+        }
+        set
+        {
+            tiles[index] = value;
+        }
+    }
+
+    public Tile this[Vector2 coordinates]
+    {
+        get
+        {
+            return tiles.Find(t => t.coordinates == coordinates);
+        }
+        set
+        {
+            tiles[tiles.FindIndex(t => t.coordinates == coordinates)] = value;
+        }
+    }
 
     void Start()
     {

@@ -46,12 +46,21 @@ public class TreeSpawner : MonoBehaviour
 			int randomPoint = points[Random.Range(0, points.Count)];
 			points.Remove(randomPoint);
 			tiler.SpawnTile(randomPoint, treePrefab);
+			var t = tiler[randomPoint];
+			t["resources"] = "tree";
+			t["health"] = 100;
+			tiler[randomPoint] = t;
 		}
 		for (int i = 0; i < numBerryBushesToSpawn; i++)
 		{
 			int randomPoint = points[Random.Range(0, points.Count)];
 			points.Remove(randomPoint);
 			tiler.SpawnTile(randomPoint, berryBushPrefab);
+			var t = tiler[randomPoint];
+			t["resources"] = "berries";
+			t["amount"] = 0;
+			t["health"] = 100;
+			tiler[randomPoint] = t;
 		}
 		for (int i = 0; i < numHerbivoresToSpawn; i++)
 		{
