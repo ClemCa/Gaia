@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 94cd4ce6f07f75648a92faad7871f9fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -133,6 +133,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1680720956253503313, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b93d2e79789a93b4f906405129830626, type: 3}
     - target: {fileID: 1680720956253503324, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_Name
       value: SkillButton
