@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4480402226334312540}
   - component: {fileID: 1858123385231793302}
   - component: {fileID: 200864487664385346}
+  - component: {fileID: 5750443639190063034}
   m_Layer: 0
   m_Name: mountain
   m_TagString: Untagged
@@ -98,3 +99,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4890176300591525589, guid: d818648c1b009ab48a03dbcc4ae09583, type: 3}
+--- !u!114 &5750443639190063034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 200864487664385347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4313ddcbdca79a447933385f03e46e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 1
