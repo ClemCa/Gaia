@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cd70aa38a3a9748b188c752722b435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animation: {fileID: -2551400709064779209}
   radius: 5
   myRadius: 0.025
   movementSpeed: 0.1
