@@ -893,7 +893,7 @@ MonoBehaviour:
     type: 1
     speed: 0.01
     strength: 0
-    age: 0
+    age: 120
     adultAge: 120
     growthRate: 0.1
     health: 1
@@ -907,7 +907,7 @@ MonoBehaviour:
     type: 2
     speed: 0.01
     strength: 25
-    age: 0
+    age: 120
     adultAge: 120
     growthRate: 0.1
     health: 1

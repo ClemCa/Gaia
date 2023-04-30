@@ -17,7 +17,7 @@ public class StatBar : MonoBehaviour
         value = entityType switch
         {
             Nature.EntityType.Herbivore => Nature.Instance.MeasureEntities(Nature.EntityType.Herbivore),
-            Nature.EntityType.Carnivore => Nature.Instance.MeasureEntities(Nature.EntityType.Carnivore),
+            Nature.EntityType.Carnivorous => Nature.Instance.MeasureEntities(Nature.EntityType.Carnivorous),
             Nature.EntityType.Plant => Nature.Instance.MeasureEntities(Nature.EntityType.Plant),
             Nature.EntityType.Water => Nature.Instance.MeasureEntities(Nature.EntityType.Water),
             _ => 0f,

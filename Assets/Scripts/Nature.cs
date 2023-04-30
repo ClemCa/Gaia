@@ -250,7 +250,7 @@ public class Nature : MonoBehaviour
     {
         None,
         Herbivore,
-        Carnivore,
+        Carnivorous,
         Plant,
         Water
     }
@@ -269,7 +269,7 @@ public class Nature : MonoBehaviour
         switch(entity.Type)
         {
             case EntityType.Herbivore:
-            case EntityType.Carnivore:
+            case EntityType.Carnivorous:
                 ((IAnimal)entity).Movement.SetSpeed(((IAnimal)entity).Speed);
                 break;
             default:
@@ -403,7 +403,7 @@ public class Nature : MonoBehaviour
             Needs.Hunger => animal.Type switch
             {
                 EntityType.Herbivore => EntityType.Plant,
-                EntityType.Carnivore => EntityType.Herbivore,
+                EntityType.Carnivorous => EntityType.Herbivore,
                 _ => throw new System.NotImplementedException()
             },
             Needs.Sleepiness => EntityType.None,
@@ -505,7 +505,7 @@ public class Nature : MonoBehaviour
                 _ = animal.Type switch
                 {
                     EntityType.Herbivore => StartCoroutine(Eat(animal, (ICreature)target, cancellation)),
-                    EntityType.Carnivore => StartCoroutine(Hunt(animal, (IAnimal)target, cancellation)),
+                    EntityType.Carnivorous => StartCoroutine(Hunt(animal, (IAnimal)target, cancellation)),
                     _ => throw new System.NotImplementedException()
                 };
                 break;
@@ -523,7 +523,6 @@ public class Nature : MonoBehaviour
     private IEnumerator Hunt(IAnimal animal, IAnimal target, ActionCancellation cancellation)
     {
         LogAction(animal, target, "hunting");
-        float delay = 0;
         while(target != null && target.Health > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -531,16 +530,15 @@ public class Nature : MonoBehaviour
                 animal.Movement.Stop();
                 yield break;
             }
-            if(delay <= 0 && InRange(animal, target))
+            if(InRange(animal, target))
             {
                 // attack
                 animal.Movement.Stop();
                 Attack(animal, target);
-                delay = attackDelay;
+                yield return new WaitForSeconds(attackDelay);
             }
             else
             {
-                delay -= Time.deltaTime;
                 // move towards
                 animal.Movement.MoveTowards(target.Transform.localPosition);
             }
@@ -561,15 +559,16 @@ public class Nature : MonoBehaviour
             Movement = child.GetComponent<NPCMovement>(),
             Speed = Mathf.Lerp(animal1.Speed, animal2.Speed, 0.5f),
             Strength = Mathf.Lerp(animal1.Strength, animal2.Strength, 0.5f),
-            Hunger = Mathf.Lerp(animal1.Hunger, animal2.Hunger, 0.5f),
-            Sleepiness = Mathf.Lerp(animal1.Sleepiness, animal2.Sleepiness, 0.5f),
-            Horniness = Mathf.Lerp(animal1.Horniness, animal2.Horniness, 0.5f),
+            Hunger = 0,
+            Sleepiness = 0,
+            Horniness = 0,
             Age = 0,
             GrowthRate = Mathf.Lerp(animal1.GrowthRate, animal2.GrowthRate, 0.5f),
             AdultAge = Mathf.Lerp(animal1.AdultAge, animal2.AdultAge, 0.5f),
-            Health = Mathf.Lerp(animal1.Health, animal2.Health, 0.5f),
-            Thirst = Mathf.Lerp(animal1.Thirst, animal2.Thirst, 0.5f),
-            Substance = Mathf.Lerp(animal1.Substance, animal2.Substance, 0.5f),
+            Health = 1,
+            AdultHealth = Mathf.Lerp(animal1.AdultHealth, animal2.AdultHealth, 0.5f),
+            Thirst = 0,
+            Substance = 0,
             Size = Mathf.Lerp(animal1.Size, animal2.Size, 0.5f),
             InteractionRange = Mathf.Lerp(animal1.InteractionRange, animal2.InteractionRange, 0.5f),
             ChildSize = Mathf.Lerp(animal1.ChildSize, animal2.ChildSize, 0.5f),
@@ -581,6 +580,31 @@ public class Nature : MonoBehaviour
     {
         LogAction(animal, target, "attacking");
         target.Health -= animal.Strength;
+        Actions.Cancel((Animal)animal);
+        Flee(target, animal);
+    }
+    private IEnumerator Flee(IAnimal animal, IAnimal target)
+    {
+        ActionCancellation cancellation = Actions.RegisterAction((Animal)animal);
+        LogAction(animal, null, "fleeing");
+        animal.Movement.Stop();
+        while (animal.Health > 0)
+        {
+            if(cancellation.IsCancelled(Actions))
+            {
+                yield break;
+            }
+            if(Vector3.Distance(animal.Transform.localPosition, target.Transform.localPosition) > animal.InteractionRange * 2)
+            {
+                LogEndAction(animal, null, "fleeing");
+                FindNextAction(animal);
+                yield break;
+            }
+            animal.Movement.MoveTowards(Vector3.LerpUnclamped(animal.Transform.localPosition, target.Transform.localPosition, -1));
+            yield return null;
+        }
+        LogEndAction(animal, null, "fleeing");
+        FindNextAction(animal);
     }
     private IEnumerator Sleep(IAnimal animal, ActionCancellation cancellation)
     {
@@ -665,15 +689,15 @@ public class Nature : MonoBehaviour
     #region Life
     void UpdateEntities()
     {
-        List<IEntity> toRemove = new();
-        foreach (var entity in Entities)
+        List<int> toRemove = new List<int>();
+        for(int i = 0; i < Entities.Count; i++)
         {
-            if (entity is ICreature creature)
+            if (Entities[i] is ICreature creature)
             {
                 if(creature.Health <= 0 && creature.Substance <= 0)
                 {
                     Destroy(creature.Transform.gameObject);
-                    toRemove.Add(creature);
+                    toRemove.Add(i);
                     continue;
                 }
                 if(creature.Health <= 0)
@@ -691,7 +715,7 @@ public class Nature : MonoBehaviour
                 {
                     creature.Substance += Time.deltaTime * growthSpeed * creature.GrowthRate;
                 }
-                if (creature.Type == EntityType.Carnivore)
+                if (creature.Type == EntityType.Carnivorous)
                 {
                     var animal = (IAnimal)creature;
                     if (creature.Age >= creature.AdultAge)
@@ -804,11 +828,16 @@ public class Nature : MonoBehaviour
                         Debug.Log($"{creature} died of thirst");
                     }
                 }
+                if(creature.Health <= 0)
+                {
+                    Actions.Cancel((Animal)creature);
+                }
+                Entities[i] = creature;
             }
         }
-        foreach (var entity in toRemove)
+        for (int i = toRemove.Count - 1; i >= 0 ; i--)
         {
-            Entities.Remove(entity);
+            Entities.RemoveAt(toRemove[i]);
         }
     }
     #endregion Life
