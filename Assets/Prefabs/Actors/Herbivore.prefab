@@ -599,6 +599,7 @@ GameObject:
   - component: {fileID: 4989168546484980337}
   - component: {fileID: 1477820925984588372}
   - component: {fileID: -8198058857239583112}
+  - component: {fileID: -4709323074349464981}
   m_Layer: 0
   m_Name: Herbivore
   m_TagString: HerbivoreMate
@@ -725,8 +726,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23fba320ad9d574cbe9024a08096e73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animalType: Herbivorous
   animator: {fileID: 6147876873679586677}
+--- !u!114 &-4709323074349464981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5279811246306103102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0012913a2f46cc49b03d061f71df1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5512041106863543837
 GameObject:
   m_ObjectHideFlags: 0

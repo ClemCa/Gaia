@@ -1915,6 +1915,7 @@ GameObject:
   - component: {fileID: 3734775969355451150}
   - component: {fileID: -5551384099194206919}
   - component: {fileID: -1834954458526961810}
+  - component: {fileID: -3137288610261980419}
   m_Layer: 0
   m_Name: Carnivore
   m_TagString: Untagged
@@ -1994,6 +1995,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3734775969355451150}
+--- !u!114 &-3137288610261980419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0012913a2f46cc49b03d061f71df1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0

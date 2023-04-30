@@ -154,6 +154,7 @@ public class Nature : MonoBehaviour
         public Transform Transform { get; set; }
         public NPCMovement Movement { get; set; }
         public NPCAnimation Animation { get; set; }
+        public NPCSounds Sounds { get; set; }
         public EntityType Type { get => type; set => type = value; }
         public float Speed { get => speed; set => speed = value; }
         public float Strength { get => strength; set => strength = value; }
@@ -211,6 +212,7 @@ public class Nature : MonoBehaviour
     {
         NPCMovement Movement { get; set; }
         NPCAnimation Animation { get; set; }
+        NPCSounds Sounds { get; set; }
         float Speed { get; set; }
         float Strength { get; set; }
         float Hunger { get; set; }
@@ -328,6 +330,21 @@ public class Nature : MonoBehaviour
     public void FindNextAction(IAnimal animal)
     {
         animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Idle);
+        if(animal.Type is EntityType.Herbivore)
+        {
+            if(animal.Age < animal.AdultAge)
+            {
+                animal.Sounds.PlaySound(NPCSounds.Sounds.GoatBabyIdle);
+            }
+            else
+            {
+                animal.Sounds.PlaySound(NPCSounds.Sounds.GoatIdle);
+            }
+        }
+        else
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.BearIdle);
+        }
         StartCoroutine(WaitThen(() => {
             // get the highest need
             (Needs[] needs, float highestNeed) = GetHighestNeed(animal, 0.1f);
@@ -586,6 +603,7 @@ public class Nature : MonoBehaviour
             Transform = child.transform,
             Movement = child.GetComponent<NPCMovement>(),
             Animation = child.GetComponent<NPCAnimation>(),
+            Sounds = child.GetComponent<NPCSounds>(),
             Speed = Mathf.Lerp(animal1.Speed, animal2.Speed, 0.5f),
             Strength = Mathf.Lerp(animal1.Strength, animal2.Strength, 0.5f),
             Hunger = 0,
@@ -608,9 +626,23 @@ public class Nature : MonoBehaviour
     private void Attack(IAnimal animal, IAnimal target)
     {
         LogAction(animal, target, "attacking");
+        animal.Sounds.PlaySound(NPCSounds.Sounds.BearAttack);
+        target.Sounds.PlaySound(NPCSounds.Sounds.GoatTakeDamage);
         animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Attacking);
         target.Animation.SetAnimationState(NPCAnimation.AnimationState.Hurt);
         target.Health -= animal.Strength;
+        if(target.Health <= 0)
+        {
+            Debug.Log($"{target} died from {animal}'s attack");
+            target.Animation.SetAnimationState(NPCAnimation.AnimationState.Dead);
+            if(target.Age < target.AdultAge)
+            {
+                target.Sounds.PlaySound(NPCSounds.Sounds.GoatBabyDead);
+            }
+            target.Movement.Stop();
+            Actions.Cancel((Animal)target);
+            return;
+        }
         Actions.Cancel((Animal)animal);
         Flee(target, animal);
     }
@@ -643,6 +675,14 @@ public class Nature : MonoBehaviour
         LogAction(animal, null, "sleeping");
         animal.Movement.Stop();
         animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Sleeping);
+        if(animal.Type is EntityType.Herbivore)
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.GoatSleep);
+        }
+        else
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.BearSleep);
+        }
         while (animal.Sleepiness > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -661,6 +701,16 @@ public class Nature : MonoBehaviour
         Actions.Cancel((Animal)target);
         animal.Movement.Stop();
         target.Movement.Stop();
+        if(animal.Type is EntityType.Herbivore)
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.GoatMate);
+            target.Sounds.PlaySound(NPCSounds.Sounds.GoatMate);
+        }
+        else
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.BearMate);
+            target.Sounds.PlaySound(NPCSounds.Sounds.BearMate);
+        }
         animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Mating);
         target.Animation.SetAnimationState(NPCAnimation.AnimationState.Mating);
         while (target != null && target.Horniness > 0 && animal.Horniness > 0)
@@ -701,6 +751,14 @@ public class Nature : MonoBehaviour
         LogAction(animal, target, "eating");
         animal.Movement.Stop();
         animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Eating);
+        if(animal.Type is EntityType.Herbivore)
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.GoatEat);
+        }
+        else
+        {
+            animal.Sounds.PlaySound(NPCSounds.Sounds.BearEat);
+        }
         while(target != null && target.Substance > 0 && animal.Hunger > 0)
         {
             if(cancellation.IsCancelled(Actions))

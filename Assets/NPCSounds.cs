@@ -7,19 +7,19 @@ public class NPCSounds : MonoBehaviour
 {
 	public enum Sounds
 	{
-		BearAttack,
-		BearEat,
-		BearIdle,
-		BearSleep,
-		GoatBabyIdle,
+		BearAttack, // V
+		BearEat, // V
+		BearIdle, // V
+		BearSleep, // V
+		GoatBabyIdle, // V
 		GoatBabyDead,
 		GoatDead,
-		GoatEat,
-		GoatMate,
-		GoatIdle,
-		BearMate,
-		GoatTakeDamage,
-		GoatSleep,
+		GoatEat, // V
+		GoatMate, // V
+		GoatIdle, // V
+		BearMate, // V
+		GoatTakeDamage, // V
+		GoatSleep, // V
 	}
 
 	public void PlaySound(Sounds sound)

@@ -77,6 +77,7 @@ public class EntitySpawner : MonoBehaviour
 			animal.Transform = transform;
 			animal.Movement = transform.GetComponent<NPCMovement>();
 			animal.Animation = transform.GetComponent<NPCAnimation>();
+			animal.Sounds = transform.GetComponent<NPCSounds>();
 			Nature.Instance.AddEntity(animal);
 		}
 		for (int i = 0; i < numCarnivorousToSpawn; i++)
@@ -88,6 +89,7 @@ public class EntitySpawner : MonoBehaviour
 			animal.Transform = transform;
 			animal.Movement = transform.GetComponent<NPCMovement>();
 			animal.Animation = transform.GetComponent<NPCAnimation>();
+			animal.Sounds = transform.GetComponent<NPCSounds>();
 			Nature.Instance.AddEntity(animal);
 		}
 		for(int i = 0; i < numWaterToSpawn; i++)
