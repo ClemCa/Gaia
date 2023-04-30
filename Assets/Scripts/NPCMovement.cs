@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class NPCMovement : MonoBehaviour
 {
+    [SerializeField] private NPCAnimation animation;
     [SerializeField] private float radius = 10f;
     [SerializeField] private float myRadius = 0.5f;
     [SerializeField] private float movementSpeed = 1f;
@@ -26,6 +27,7 @@ public class NPCMovement : MonoBehaviour
     }
     public void Place(Vector3 position)
     {
+        animation.SetAnimationState(NPCAnimation.AnimationState.Moving);
         Vector3 targetPosition = position.normalized * radius / transform.parent.localScale.x;
         (int count, List<Obstacle.ObstacleQuery> queries) = Obstacle.QueryAll(targetPosition, myRadius);
         if(count == 0)

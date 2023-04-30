@@ -74,6 +74,7 @@ public class EntitySpawner : MonoBehaviour
 			var animal = defaultHerbivore;
 			animal.Transform = transform;
 			animal.Movement = transform.GetComponent<NPCMovement>();
+			animal.Animation = transform.GetComponent<NPCAnimation>();
 			Nature.Instance.AddEntity(animal);
 		}
 		for (int i = 0; i < numCarnivorousToSpawn; i++)
@@ -84,6 +85,7 @@ public class EntitySpawner : MonoBehaviour
 			var animal = defaultCarnivore;
 			animal.Transform = transform;
 			animal.Movement = transform.GetComponent<NPCMovement>();
+			animal.Animation = transform.GetComponent<NPCAnimation>();
 			Nature.Instance.AddEntity(animal);
 		}
 	}

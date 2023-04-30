@@ -598,6 +598,7 @@ GameObject:
   - component: {fileID: 6147876873679586677}
   - component: {fileID: 4989168546484980337}
   - component: {fileID: 1477820925984588372}
+  - component: {fileID: -8198058857239583112}
   m_Layer: 0
   m_Name: Herbivore
   m_TagString: HerbivoreMate
@@ -711,6 +712,18 @@ MonoBehaviour:
   pathfindingGranularity: 0.005
   pathfindingMaxIterations: 100
   defaultOffset: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &-8198058857239583112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5279811246306103102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23fba320ad9d574cbe9024a08096e73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5512041106863543837
 GameObject:
   m_ObjectHideFlags: 0

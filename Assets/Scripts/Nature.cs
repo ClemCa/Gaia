@@ -19,6 +19,8 @@ public class Nature : MonoBehaviour
     [SerializeField] private float thirstDeathThreshold = 120f;
     [SerializeField] private float sleepDeathThreshold = 120f;
     [SerializeField] private float ageDeathThreshold = 1200f;
+    [SerializeField] private float minimumIdleTime = 1;
+    [SerializeField] private float maximumIdleTime = 5;
     private List<IEntity> Entities = new List<IEntity>();
     private EntityActions Actions = new()
     {
@@ -150,6 +152,7 @@ public class Nature : MonoBehaviour
         public string GUID { get; set; }
         public Transform Transform { get; set; }
         public NPCMovement Movement { get; set; }
+        public NPCAnimation Animation { get; set; }
         public EntityType Type { get => type; set => type = value; }
         public float Speed { get => speed; set => speed = value; }
         public float Strength { get => strength; set => strength = value; }
@@ -206,6 +209,7 @@ public class Nature : MonoBehaviour
     public interface IAnimal : ICreature
     {
         NPCMovement Movement { get; set; }
+        NPCAnimation Animation { get; set; }
         float Speed { get; set; }
         float Strength { get; set; }
         float Hunger { get; set; }
@@ -308,16 +312,24 @@ public class Nature : MonoBehaviour
     #region Logic
     public void FindNextAction(IAnimal animal)
     {
-        // get the highest need
-        (Needs[] needs, float highestNeed) = GetHighestNeed(animal, 0.1f);
-        // if the highest need is below the threshold, roam
-        if (highestNeed < needThreshold)
-        {
-            Roam(animal);
-            return;
-        }
-        (IEntity closestNeed, Needs need) = GetClosestNeed(animal, needs);
-        SatisfyNeed(animal, closestNeed, need);
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Idle);
+        StartCoroutine(WaitThen(() => {
+            // get the highest need
+            (Needs[] needs, float highestNeed) = GetHighestNeed(animal, 0.1f);
+            // if the highest need is below the threshold, roam
+            if (highestNeed < needThreshold)
+            {
+                Roam(animal);
+                return;
+            }
+            (IEntity closestNeed, Needs need) = GetClosestNeed(animal, needs);
+            SatisfyNeed(animal, closestNeed, need);
+        }, UnityEngine.Random.Range(minimumIdleTime, maximumIdleTime)));
+    }
+    private IEnumerator WaitThen(Action action, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        action();
     }
     public void SatisfyNeed(IAnimal animal, IEntity target, Needs need)
     {
@@ -523,6 +535,7 @@ public class Nature : MonoBehaviour
     private IEnumerator Hunt(IAnimal animal, IAnimal target, ActionCancellation cancellation)
     {
         LogAction(animal, target, "hunting");
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Hunting);
         while(target != null && target.Health > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -557,6 +570,7 @@ public class Nature : MonoBehaviour
             Type = animal1.Type,
             Transform = child.transform,
             Movement = child.GetComponent<NPCMovement>(),
+            Animation = child.GetComponent<NPCAnimation>(),
             Speed = Mathf.Lerp(animal1.Speed, animal2.Speed, 0.5f),
             Strength = Mathf.Lerp(animal1.Strength, animal2.Strength, 0.5f),
             Hunger = 0,
@@ -579,6 +593,8 @@ public class Nature : MonoBehaviour
     private void Attack(IAnimal animal, IAnimal target)
     {
         LogAction(animal, target, "attacking");
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Attacking);
+        target.Animation.SetAnimationState(NPCAnimation.AnimationState.Hurt);
         target.Health -= animal.Strength;
         Actions.Cancel((Animal)animal);
         Flee(target, animal);
@@ -588,6 +604,7 @@ public class Nature : MonoBehaviour
         ActionCancellation cancellation = Actions.RegisterAction((Animal)animal);
         LogAction(animal, null, "fleeing");
         animal.Movement.Stop();
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Fleeing);
         while (animal.Health > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -610,6 +627,7 @@ public class Nature : MonoBehaviour
     {
         LogAction(animal, null, "sleeping");
         animal.Movement.Stop();
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Sleeping);
         while (animal.Sleepiness > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -628,6 +646,8 @@ public class Nature : MonoBehaviour
         Actions.Cancel((Animal)target);
         animal.Movement.Stop();
         target.Movement.Stop();
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Mating);
+        target.Animation.SetAnimationState(NPCAnimation.AnimationState.Mating);
         while (target != null && target.Horniness > 0 && animal.Horniness > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -647,6 +667,7 @@ public class Nature : MonoBehaviour
     {
         LogAction(animal, target, "drinking");
         animal.Movement.Stop();
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Drinking);
         while (target != null && target.Substance > 0 && animal.Thirst > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -664,6 +685,7 @@ public class Nature : MonoBehaviour
     {
         LogAction(animal, target, "eating");
         animal.Movement.Stop();
+        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Eating);
         while(target != null && target.Substance > 0 && animal.Hunger > 0)
         {
             if(cancellation.IsCancelled(Actions))
@@ -737,12 +759,14 @@ public class Nature : MonoBehaviour
                     if(animal.Hunger >= hungerDeathThreshold)
                     {
                         animal.Health -= Time.deltaTime;
+                        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dying);
                         if(animal.Health <= 0)
                             Debug.Log($"{creature} died of hunger");
                     }
                     if(animal.Sleepiness >= sleepDeathThreshold)
                     {
                         animal.Health -= Time.deltaTime;
+                        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dying);
                         if(animal.Health <= 0)
                             Debug.Log($"{creature} died from lack of sleep");
                     }
@@ -765,12 +789,14 @@ public class Nature : MonoBehaviour
                     if(animal.Hunger >= hungerDeathThreshold)
                     {
                         animal.Health -= Time.deltaTime;
+                        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dying);
                         if(animal.Health <= 0)
                             Debug.Log($"{creature} died of hunger");
                     }
                     if(animal.Sleepiness >= sleepDeathThreshold)
                     {
                         animal.Health -= Time.deltaTime;
+                        animal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dying);
                         if(animal.Health <= 0)
                             Debug.Log($"{creature} died from lack of sleep");
                     }
@@ -828,9 +854,10 @@ public class Nature : MonoBehaviour
                         Debug.Log($"{creature} died of thirst");
                     }
                 }
-                if(creature.Health <= 0)
+                if(creature.Health <= 0 && creature is Animal deadAnimal)
                 {
-                    Actions.Cancel((Animal)creature);
+                    Actions.Cancel(deadAnimal);
+                    deadAnimal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dead);
                 }
                 Entities[i] = creature;
             }
