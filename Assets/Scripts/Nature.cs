@@ -859,11 +859,12 @@ public class Nature : MonoBehaviour
                             Health = 1
                         };
                         var point = Tiler.Instance.GetFreeTile(plant.Coordinates, "entity", plant.InteractionRange);
-                        if(point == -1)
-                            continue;
-                        var transform = Tiler.Instance.SpawnTile(point, plant.Transform.gameObject);
-                        childPlant.Transform = transform;
-                        AddEntity(childPlant);
+                        if(point != -1)
+                        {
+                            var transform = Tiler.Instance.SpawnTile(point, plant.Transform.gameObject);
+                            childPlant.Transform = transform;
+                            AddEntity(childPlant);
+                        }
                     }
                     if(plant.Thirst > thirstDeathThreshold)
                     {
