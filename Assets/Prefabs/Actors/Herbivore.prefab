@@ -725,6 +725,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b23fba320ad9d574cbe9024a08096e73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animalType: Herbivorous
+  animator: {fileID: 6147876873679586677}
 --- !u!1 &5512041106863543837
 GameObject:
   m_ObjectHideFlags: 0
