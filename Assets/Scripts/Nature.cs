@@ -21,6 +21,7 @@ public class Nature : MonoBehaviour
     [SerializeField] private float ageDeathThreshold = 1200f;
     [SerializeField] private float minimumIdleTime = 1;
     [SerializeField] private float maximumIdleTime = 5;
+    [SerializeField] private float waterNaturalFillRate = 0.5f;
     private List<IEntity> Entities = new List<IEntity>();
     private EntityActions Actions = new()
     {
@@ -811,6 +812,14 @@ public class Nature : MonoBehaviour
                         if(animal.Health <= 0)
                             Debug.Log($"{creature} died from lack of sleep");
                     }
+                    if(animal.Thirst > thirstDeathThreshold)
+                    {
+                        animal.Health -= Time.deltaTime;
+                        if(animal.Health <= 0)
+                        {
+                            Debug.Log($"{animal} died of thirst");
+                        }
+                    }
                 }
                 else if (creature.Type == EntityType.Plant)
                 {
@@ -856,13 +865,9 @@ public class Nature : MonoBehaviour
                         childPlant.Transform = transform;
                         AddEntity(childPlant);
                     }
-                }
-                if(creature.Thirst > thirstDeathThreshold)
-                {
-                    creature.Health -= Time.deltaTime;
-                    if(creature.Health <= 0)
+                    if(plant.Thirst > thirstDeathThreshold)
                     {
-                        Debug.Log($"{creature} died of thirst");
+                        plant.ReproductionProgress = 0; // no dying of thirst for plants
                     }
                 }
                 if(creature.Health <= 0 && creature is Animal deadAnimal)
@@ -871,6 +876,11 @@ public class Nature : MonoBehaviour
                     deadAnimal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dead);
                 }
                 Entities[i] = creature;
+            }
+            else if(Entities[i] is IWater water)
+            {
+                water.Substance += Time.deltaTime * waterNaturalFillRate;
+                Entities[i] = water;
             }
         }
         for (int i = toRemove.Count - 1; i >= 0 ; i--)
