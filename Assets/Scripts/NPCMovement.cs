@@ -131,6 +131,7 @@ public class NPCMovement : MonoBehaviour
                 if(path.Count == 0)
                 {
                     callback?.Invoke();
+                    Debug.Log("Arrived at target");
                     yield break;
                 }
                 nextPoint = path[0];
@@ -141,6 +142,7 @@ public class NPCMovement : MonoBehaviour
                 path.RemoveAt(0);
                 if(path.Count == 0)
                 {
+                    Debug.Log("Arrived at target");
                     callback?.Invoke();
                     yield break;
                 }
@@ -154,11 +156,6 @@ public class NPCMovement : MonoBehaviour
     {
         float refresh = -UnityEngine.Random.Range(0, pathfindingRefreshRate);
         List<Vector3> path = PlanPath(transform.localPosition, position).ToList();
-        if(path.Count == 1)
-        {
-            path.Add(position);
-        }
-        path.RemoveAt(0); // remove current position
         Vector3 nextPoint = path[0];
         while(true)
         {
@@ -166,20 +163,21 @@ public class NPCMovement : MonoBehaviour
             {
                 refresh = 0;
                 path = PlanPath(transform.localPosition, position).ToList();
-                path.RemoveAt(0); // remove current position
                 if(path.Count == 0)
                 {
                     callback?.Invoke();
+                    Debug.Log("Arrived at destination");
                     yield break;
                 }
                 nextPoint = path[0];
             }
             refresh += Time.deltaTime;
-            if((transform.localPosition - nextPoint).sqrMagnitude < pathfindingGranularity * pathfindingGranularity)
+            if((transform.localPosition - nextPoint).sqrMagnitude < pathfindingPrecision * pathfindingGranularity)
             {
                 path.RemoveAt(0);
                 if(path.Count == 0)
                 {
+                    Debug.Log("Arrived at destination");
                     callback?.Invoke();
                     yield break;
                 }
@@ -251,6 +249,7 @@ public class NPCMovement : MonoBehaviour
             path[pathIndex++] = to;
         }
         #if(UNITY_EDITOR)
+        Debug.DrawLine(transform.parent.TransformPoint(from), transform.parent.TransformPoint(path[0]), Color.red, pathfindingRefreshRate);
         for(int i = 0; i < pathIndex - 1; i++)
         {
             Debug.DrawLine(transform.parent.TransformPoint(path[i]), transform.parent.TransformPoint(path[i + 1]), Color.red, pathfindingRefreshRate);

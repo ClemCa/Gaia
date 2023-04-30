@@ -6,13 +6,16 @@ public class Obstacle : MonoBehaviour
 {
     [SerializeField] private float radius = 1f;
     private Vector3 position;
-    private float parentScale;
+    private float parentScale = 1;
     private static List<Obstacle> obstacles = new List<Obstacle>();
     void Awake()
     {
         obstacles.Add(this);
-        parentScale = transform.parent.localScale.x;
+    }
+    void Update()
+    {
         position = transform.localPosition;
+        parentScale = transform.parent.localScale.x;
     }
     void OnDestroy()
     {

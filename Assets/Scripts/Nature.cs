@@ -282,6 +282,28 @@ public class Nature : MonoBehaviour
         if(entity is IPlant plant)
             Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
     }
+    public int CountEntities(EntityType type)
+    {
+        int count = 0;
+        foreach(IEntity entity in Entities)
+        {
+            if (entity.Type == type)
+                count++;
+        }
+        return count;
+    }
+    public float MeasureEntities(EntityType type)
+    {
+        float substance = 0;
+        foreach (IEntity entity in Entities)
+        {
+            if (entity is ICreature creature)
+                substance += creature.Health;
+            else
+                substance += entity.Substance;
+        }
+        return substance;
+    }
     #endregion Entity Management
     #region Logic
     public void FindNextAction(IAnimal animal)

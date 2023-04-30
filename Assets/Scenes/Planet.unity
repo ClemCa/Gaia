@@ -739,6 +739,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5639589094581449534, guid: a2e303e599af9c844944816c8435956d, type: 3}
   m_PrefabInstance: {fileID: 262339415}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &303959458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5710909743123812955, guid: a665c781301770146888b18f4b33c990, type: 3}
+  m_PrefabInstance: {fileID: 1286148433}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &304785103
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,9 +885,9 @@ MonoBehaviour:
   berryBushPrefab: {fileID: 1439904337943108576, guid: 1f115dd58f3bf824abedeb1063682f91, type: 3}
   numBerryBushesToSpawn: 50
   herbivores: {fileID: 5279811246306103102, guid: f5e6a247607d2f941a1dcacfdbc60294, type: 3}
-  numHerbivoresToSpawn: 50
+  numHerbivoresToSpawn: 1
   carnivorous: {fileID: 7962199819078159310, guid: ef43c07a47f446944adad0f2fc5f6d45, type: 3}
-  numCarnivorousToSpawn: 50
+  numCarnivorousToSpawn: 0
   seed: the seed
   defaultHerbivore:
     type: 1
@@ -3762,6 +3767,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5710909743123812932, guid: a665c781301770146888b18f4b33c990, type: 3}
   m_PrefabInstance: {fileID: 1286148433}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1286148438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 303959458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d104390e460f3d4bb0107dab496dec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityType: 3
+  highestValue: 10000
 --- !u!1 &1316748609
 GameObject:
   m_ObjectHideFlags: 0
@@ -6070,6 +6089,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1873275157}
   m_CullTransparentMesh: 1
+--- !u!1 &1878527839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5710909743123812955, guid: a665c781301770146888b18f4b33c990, type: 3}
+  m_PrefabInstance: {fileID: 2096658510}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1899776208 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5710909743123812955, guid: a665c781301770146888b18f4b33c990, type: 3}
+  m_PrefabInstance: {fileID: 5710909742229209460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1956765976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5710909743123812955, guid: a665c781301770146888b18f4b33c990, type: 3}
+  m_PrefabInstance: {fileID: 1575611214}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1956765980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956765976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d104390e460f3d4bb0107dab496dec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityType: 4
+  highestValue: 10000
 --- !u!1001 &1957042192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6213,6 +6261,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5710909743123812932, guid: a665c781301770146888b18f4b33c990, type: 3}
   m_PrefabInstance: {fileID: 5710909742229209460}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1993708340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899776208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d104390e460f3d4bb0107dab496dec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityType: 2
+  highestValue: 10000
 --- !u!82 &1997158823 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 1336029886698954140, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
@@ -6896,6 +6958,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5710909743123812932, guid: a665c781301770146888b18f4b33c990, type: 3}
   m_PrefabInstance: {fileID: 2096658510}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2096658515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878527839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d104390e460f3d4bb0107dab496dec7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityType: 1
+  highestValue: 10000
 --- !u!1 &2103794725
 GameObject:
   m_ObjectHideFlags: 0
