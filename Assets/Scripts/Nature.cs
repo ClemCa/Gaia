@@ -22,7 +22,14 @@ public class Nature : MonoBehaviour
     [SerializeField] private float minimumIdleTime = 1;
     [SerializeField] private float maximumIdleTime = 5;
     [SerializeField] private float waterNaturalFillRate = 0.5f;
-    private List<IEntity> Entities = new List<IEntity>();
+    private List<IEntity> entities = new List<IEntity>();
+    public List<IEntity> Entities
+    {
+        get
+        {
+            return entities;
+        }
+    }
     private EntityActions Actions = new()
     {
         Actions = new List<EntityAction>()
@@ -288,7 +295,7 @@ public class Nature : MonoBehaviour
             Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
             plant.ReproductionProgress = -UnityEngine.Random.Range(0, 1);
         }
-        Entities.Add(entity);
+        entities.Add(entity);
         if(entity is IAnimal animal)
             FindNextAction(animal);
         if(entity is IWater water)
@@ -297,7 +304,7 @@ public class Nature : MonoBehaviour
     public int CountEntities(EntityType type)
     {
         int count = 0;
-        foreach(IEntity entity in Entities)
+        foreach(IEntity entity in entities)
         {
             if (entity.Type == type)
                 count++;
@@ -307,7 +314,7 @@ public class Nature : MonoBehaviour
     public float MeasureEntities(EntityType type)
     {
         float substance = 0;
-        foreach (IEntity entity in Entities)
+        foreach (IEntity entity in entities)
         {
             if (entity is ICreature creature)
                 substance += creature.Health;
@@ -318,12 +325,22 @@ public class Nature : MonoBehaviour
     }
     public float GetSubstance(string guid)
     {
-        foreach (IEntity entity in Entities)
+        foreach (IEntity entity in entities)
         {
             if (entity.GUID == guid)
                 return entity.Substance;
         }
         return 0;
+    }
+    public int[] GetEntities(Func<IEntity, bool> predicate)
+    {
+        List<int> indices = new List<int>();
+        for(int i = 0; i < entities.Count; i++)
+        {
+            if (predicate(entities[i]))
+                indices.Add(i);
+        }
+        return indices.ToArray();
     }
     #endregion Entity Management
     #region Logic
@@ -431,11 +448,11 @@ public class Nature : MonoBehaviour
     public IEntity[] GetWaterSources(IEntity from)
     {
         List<IEntity> targets = new List<IEntity>();
-        for(int i = 0; i < Entities.Count; i++)
+        for(int i = 0; i < entities.Count; i++)
         {
-            if(Entities[i].Type == EntityType.Water && Vector3.Distance(Entities[i].Transform.position, from.Transform.position) <= Entities[i].InteractionRange * globalInteractionRange)
+            if(entities[i].Type == EntityType.Water && Vector3.Distance(entities[i].Transform.position, from.Transform.position) <= entities[i].InteractionRange * globalInteractionRange)
             {
-                targets.Add(Entities[i]);
+                targets.Add(entities[i]);
             }
         }
         return targets.ToArray();
@@ -461,17 +478,17 @@ public class Nature : MonoBehaviour
         }
         IEntity closestTarget = null;
         float closestDistance = float.PositiveInfinity;
-        for(int i = 0; i < Entities.Count; i++)
+        for(int i = 0; i < entities.Count; i++)
         {
-            if(Entities[i].Type != targetType || Entities[i] == animal)
+            if(entities[i].Type != targetType || entities[i] == animal)
                 continue;
             // for horniness, mate needs to have a needs above the threshold
-            if(need == Needs.Horniness && GetNeed((IAnimal)Entities[i], Needs.Horniness) < needThreshold)
+            if(need == Needs.Horniness && GetNeed((IAnimal)entities[i], Needs.Horniness) < needThreshold)
                 continue;
-            float distance = Vector2.Distance(animal.Transform.localPosition, Entities[i].Transform.localPosition);
+            float distance = Vector2.Distance(animal.Transform.localPosition, entities[i].Transform.localPosition);
             if(distance < closestDistance)
             {
-                closestTarget = Entities[i];
+                closestTarget = entities[i];
                 closestDistance = distance;
             }
         }
@@ -638,6 +655,9 @@ public class Nature : MonoBehaviour
             if(target.Age < target.AdultAge)
             {
                 target.Sounds.PlaySound(NPCSounds.Sounds.GoatBabyDead);
+            } else
+            {
+                target.Sounds.PlaySound(NPCSounds.Sounds.GoatDead);
             }
             target.Movement.Stop();
             Actions.Cancel((Animal)target);
@@ -785,9 +805,9 @@ public class Nature : MonoBehaviour
     void UpdateEntities()
     {
         List<int> toRemove = new List<int>();
-        for(int i = 0; i < Entities.Count; i++)
+        for(int i = 0; i < entities.Count; i++)
         {
-            if (Entities[i] is ICreature creature)
+            if (entities[i] is ICreature creature)
             {
                 if(creature.Health <= 0 && creature.Substance <= 0)
                 {
@@ -939,18 +959,31 @@ public class Nature : MonoBehaviour
                 {
                     Actions.Cancel(deadAnimal);
                     deadAnimal.Animation.SetAnimationState(NPCAnimation.AnimationState.Dead);
+                    if(creature.Type is EntityType.Carnivorous)
+                    {
+                        deadAnimal.Sounds.PlaySound(NPCSounds.Sounds.BearDead);
+                    } else
+                    {
+                        if(deadAnimal.Age < deadAnimal.AdultAge)
+                        {
+                            deadAnimal.Sounds.PlaySound(NPCSounds.Sounds.GoatBabyDead);
+                        } else
+                        {
+                            deadAnimal.Sounds.PlaySound(NPCSounds.Sounds.GoatDead);
+                        }
+                    }
                 }
-                Entities[i] = creature;
+                entities[i] = creature;
             }
-            else if(Entities[i] is IWater water)
+            else if(entities[i] is IWater water)
             {
                 water.Substance += Time.deltaTime * waterNaturalFillRate;
-                Entities[i] = water;
+                entities[i] = water;
             }
         }
         for (int i = toRemove.Count - 1; i >= 0 ; i--)
         {
-            Entities.RemoveAt(toRemove[i]);
+            entities.RemoveAt(toRemove[i]);
         }
     }
     #endregion Life

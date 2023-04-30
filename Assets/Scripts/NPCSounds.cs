@@ -29,6 +29,7 @@ public class NPCSounds : MonoBehaviour
 		BearMate, // V
 		GoatTakeDamage, // V
 		GoatSleep, // V
+		BearDead
 	}
 
 	public void PlaySound(Sounds sound)
