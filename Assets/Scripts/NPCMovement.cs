@@ -27,7 +27,7 @@ public class NPCMovement : MonoBehaviour
     public void Place(Vector3 position)
     {
         Vector3 targetPosition = position.normalized * radius / transform.parent.localScale.x;
-        (int count, Obstacle.ObstacleQuery[] queries) = Obstacle.QueryAll(targetPosition, myRadius);
+        (int count, List<Obstacle.ObstacleQuery> queries) = Obstacle.QueryAll(targetPosition, myRadius);
         if(count == 0)
         {
             Vector3 direction = (targetPosition - transform.localPosition).normalized;
@@ -202,7 +202,7 @@ public class NPCMovement : MonoBehaviour
         {
             Vector3 position = Vector3.Lerp(from, to, (float)i / steps);
             position = position.normalized * scaleFactor;
-            (int count, Obstacle.ObstacleQuery[] queries) = Obstacle.QueryAll(position, myRadius);
+            (int count, List<Obstacle.ObstacleQuery> queries) = Obstacle.QueryAll(position, myRadius);
             if(count == 0)
             {
                 path[pathIndex++] = position;
@@ -233,10 +233,9 @@ public class NPCMovement : MonoBehaviour
             else
                 rightDot = pathfindingGranularity;
             newDirection = velocity + right * rightDot;
-            previousStep += newDirection;
-            count = 0;
-            while(count < pathfindingMaxIterations)
+            for(count = 0; count < pathfindingMaxIterations; count++)
             {
+                previousStep += newDirection;
                 position = previousStep.normalized * scaleFactor;
                 if(!Obstacle.QueryAllNoReturn(position, myRadius))
                 {
