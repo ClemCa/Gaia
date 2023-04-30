@@ -15,6 +15,8 @@ public class EntitySpawner : MonoBehaviour
 	[SerializeField] private int numHerbivoresToSpawn = 1;
 	[SerializeField] private GameObject carnivorous;
 	[SerializeField] private int numCarnivorousToSpawn = 1;
+	[SerializeField] private GameObject waterPrefab;
+	[SerializeField] private int numWaterToSpawn = 1;
 	[SerializeField] private string seed;
 	[SerializeField] private Nature.Animal defaultHerbivore;
 	[SerializeField] private Nature.Animal defaultCarnivore;
@@ -87,6 +89,15 @@ public class EntitySpawner : MonoBehaviour
 			animal.Movement = transform.GetComponent<NPCMovement>();
 			animal.Animation = transform.GetComponent<NPCAnimation>();
 			Nature.Instance.AddEntity(animal);
+		}
+		for(int i = 0; i < numWaterToSpawn; i++)
+		{
+			int randomPoint = points[Random.Range(0, points.Count)];
+			points.Remove(randomPoint);
+			var transform = tiler.SpawnTile(randomPoint, waterPrefab);
+			var water = defaultWater;
+			water.Transform = transform;
+			Nature.Instance.AddEntity(water);
 		}
 	}
 }

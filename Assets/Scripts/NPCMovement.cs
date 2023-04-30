@@ -122,14 +122,16 @@ public class NPCMovement : MonoBehaviour
     private IEnumerator MoveCoroutine(Transform target, Action callback = null)
     {
         float refresh = -UnityEngine.Random.Range(0, pathfindingRefreshRate);
-        List<Vector3> path = PlanPath(transform.localPosition, target.localPosition).ToList();
+        Vector3 targetPosition = target.localPosition.normalized * radius / transform.parent.localScale.x;
+        List<Vector3> path = PlanPath(transform.localPosition, targetPosition).ToList();
         Vector3 nextPoint = path[0];
         while(true)
         {
             if(refresh > pathfindingRefreshRate)
             {
                 refresh = 0;
-                path = PlanPath(transform.localPosition, target.localPosition).ToList();
+                targetPosition = target.localPosition.normalized * radius / transform.parent.localScale.x;
+                path = PlanPath(transform.localPosition, targetPosition).ToList();
                 if(path.Count == 0)
                 {
                     callback?.Invoke();

@@ -285,6 +285,8 @@ public class Nature : MonoBehaviour
             FindNextAction(animal);
         if(entity is IPlant plant)
             Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
+        if(entity is IWater water)
+            water.Transform.GetComponent<WaterSource>().GUID = water.GUID;
     }
     public int CountEntities(EntityType type)
     {
@@ -307,6 +309,15 @@ public class Nature : MonoBehaviour
                 substance += entity.Substance;
         }
         return substance;
+    }
+    public float GetSubstance(string guid)
+    {
+        foreach (IEntity entity in Entities)
+        {
+            if (entity.GUID == guid)
+                return entity.Substance;
+        }
+        return 0;
     }
     #endregion Entity Management
     #region Logic
@@ -434,7 +445,7 @@ public class Nature : MonoBehaviour
             if(Entities[i].Type != targetType || Entities[i] == animal)
                 continue;
             // for horniness, mate needs to have a needs above the threshold
-            if(need == Needs.Horniness && GetNeed((IAnimal)Entities[i], Needs.Horniness) > needThreshold)
+            if(need == Needs.Horniness && GetNeed((IAnimal)Entities[i], Needs.Horniness) < needThreshold)
                 continue;
             float distance = Vector2.Distance(animal.Transform.localPosition, Entities[i].Transform.localPosition);
             if(distance < closestDistance)

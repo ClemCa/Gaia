@@ -888,6 +888,8 @@ MonoBehaviour:
   numHerbivoresToSpawn: 50
   carnivorous: {fileID: 7962199819078159310, guid: ef43c07a47f446944adad0f2fc5f6d45, type: 3}
   numCarnivorousToSpawn: 50
+  waterPrefab: {fileID: 3470358255086282861, guid: daff65d0956361747ba0d8f40d1343a6, type: 3}
+  numWaterToSpawn: 50
   seed: the seed
   defaultHerbivore:
     type: 1
@@ -931,22 +933,22 @@ MonoBehaviour:
     childSize: 0.005
     adultSize: 0.01
   defaultBerryBush:
-    type: 0
-    drinkRate: 0
-    reproductionRate: 0
+    type: 3
+    drinkRate: 1
+    reproductionRate: 0.01
     age: 0
-    growthRate: 0
-    adultAge: 0
-    health: 0
+    growthRate: 0.1
+    adultAge: 60
+    health: 1
     substance: 0
-    size: 0
-    interactionRange: 0
-    childSize: 0
-    adultSize: 0
+    size: 0.01
+    interactionRange: 0.025
+    childSize: 0.005
+    adultSize: 0.01
   defaultWater:
-    type: 0
-    amount: 0
-    substance: 0
+    type: 4
+    amount: 100
+    substance: 100
     size: 0
     interactionRange: 0
 --- !u!114 &307906545
@@ -3193,6 +3195,8 @@ MonoBehaviour:
   thirstDeathThreshold: 120
   sleepDeathThreshold: 120
   ageDeathThreshold: 1200
+  minimumIdleTime: 1
+  maximumIdleTime: 5
 --- !u!4 &984776949
 Transform:
   m_ObjectHideFlags: 0
