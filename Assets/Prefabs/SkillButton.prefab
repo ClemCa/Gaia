@@ -414,6 +414,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillButton
       objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: UseSkill
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SkillUser, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1680720956253503327, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

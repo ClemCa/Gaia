@@ -46,6 +46,8 @@ public class SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         StopAllCoroutines();
         majorCoroutineRunning = true;
+        description.alpha = 0;
+        description.gameObject.SetActive(false);
         StartCoroutine(ResizeRoutine(clickedSize, clickedDuration));
         StartCoroutine(DelayedReset());
     }

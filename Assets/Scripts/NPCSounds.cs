@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class NPCSounds : MonoBehaviour
 {
+	[SerializeField] private AudioSource audioSource;
+	[SerializeField] private AudioData[] audioData;
+	[System.Serializable]
+	public struct AudioData
+	{
+		public string name;
+		public AudioClip clip;
+		public float volume;
+	}
 	public enum Sounds
 	{
 		BearAttack, // V
@@ -25,5 +34,20 @@ public class NPCSounds : MonoBehaviour
 	public void PlaySound(Sounds sound)
 	{
 		
+	}
+
+	private void PlayByName(string name)
+	{
+		foreach (var data in audioData)
+		{
+			if (data.name == name)
+			{
+				audioSource.clip = data.clip;
+				audioSource.volume = data.volume;
+				audioSource.Play();
+				return;
+			}
+		}
+		Debug.LogError("No sound with name " + name + " found!");
 	}
 }
