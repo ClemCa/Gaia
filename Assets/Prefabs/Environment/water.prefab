@@ -102,5 +102,5 @@ MonoBehaviour:
   maxAmount: 1000
   minPrecision: 0.0015
   maxPrecision: 0.02
-  trueSize: {x: 0.9872, y: 0.9872, z: 0.9872}
+  trueSize: {x: 0.9872, y: 0.9976, z: 0.9872}
   GUID: 

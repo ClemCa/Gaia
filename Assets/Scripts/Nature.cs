@@ -281,11 +281,14 @@ public class Nature : MonoBehaviour
                 break;
         }
         entity.GUID = Guid.NewGuid().ToString();
+        if(entity is IPlant plant)
+        {
+            Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
+            plant.ReproductionProgress = UnityEngine.Random.Range(0, plant.ReproductionRate);
+        }
         Entities.Add(entity);
         if(entity is IAnimal animal)
             FindNextAction(animal);
-        if(entity is IPlant plant)
-            Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
         if(entity is IWater water)
             water.Transform.GetComponent<WaterSource>().GUID = water.GUID;
     }
@@ -834,12 +837,15 @@ public class Nature : MonoBehaviour
                     var waterSource = GetWaterSources(plant).OrderByDescending(t => t.Substance).ToArray();
                     if (waterSource.Length > 0 && waterSource[0].Substance > 0)
                     {
+                        Debug.Log($"{plant} drinking from {waterSource[0]}");
+                        Debug.DrawLine(plant.Transform.position, waterSource[0].Transform.position, Color.blue);
                         plant.Thirst -= Time.deltaTime * plant.DrinkRate;
                         waterSource[0].Substance -= Time.deltaTime * plant.DrinkRate;
                     }
                     plant.ReproductionProgress += Time.deltaTime * plant.ReproductionRate;
                     if (plant.ReproductionProgress >= 1)
                     {
+                        Debug.Log($"{plant} reproduced");
                         plant.ReproductionProgress = 0;
                         var childPlant = new Plant()
                         {

@@ -22,7 +22,7 @@ public class WaterSource : MonoBehaviour
         float amount = Nature.Instance.GetSubstance(GUID);
         transform.localScale = Vector3.one * Mathf.Lerp(minScale, maxScale, amount / maxAmount);
         var multiply = Multiply(position.normalized, trueSize) * 0.5f;
-        transform.localPosition = (multiply - position.normalized * transform.localScale.x * 0.5f) * (1 + Mathf.Lerp(minPrecision, maxPrecision, amount / maxAmount));
+        transform.localPosition = (multiply - Multiply(position.normalized, trueSize) * transform.localScale.x * 0.5f) * (1 + Mathf.Lerp(minPrecision, maxPrecision, amount / maxAmount));
     }
 
     private Vector3 Multiply(Vector3 a, Vector3 b)
