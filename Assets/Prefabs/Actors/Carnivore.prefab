@@ -1916,6 +1916,7 @@ GameObject:
   - component: {fileID: -5551384099194206919}
   - component: {fileID: -1834954458526961810}
   - component: {fileID: -3137288610261980419}
+  - component: {fileID: 4811515109733063113}
   m_Layer: 0
   m_Name: Carnivore
   m_TagString: Untagged
@@ -2007,6 +2008,119 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0012913a2f46cc49b03d061f71df1e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 4811515109733063113}
+  audioData:
+  - name: BearAttack
+    clip: {fileID: 8300000, guid: 3ca5379e44d3cd84cab427275c18bf32, type: 3}
+    volume: 1
+  - name: BearEat
+    clip: {fileID: 8300000, guid: 78add93e4fa908b458fc446c95b88581, type: 3}
+    volume: 1
+  - name: BearIdle
+    clip: {fileID: 8300000, guid: 922bb3ee5c5994140bab79d29ef654ff, type: 3}
+    volume: 1
+  - name: BearMate
+    clip: {fileID: 8300000, guid: 8ea2819f038545c47a07274ca3b39d23, type: 3}
+    volume: 1
+  - name: BearSleep
+    clip: {fileID: 8300000, guid: 18df87c37bb8f0847913d50ee917b3d2, type: 3}
+    volume: 1
+--- !u!82 &4811515109733063113
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 2000
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0
