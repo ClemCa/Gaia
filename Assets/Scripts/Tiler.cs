@@ -9,6 +9,18 @@ public class Tiler : MonoBehaviour
     [SerializeField] private GameObject debugPrefab;
     [SerializeField] private GameObject debugPrefab2;
 
+    private static Tiler instance;
+    public static Tiler Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<Tiler>();
+            }
+            return instance;
+        }
+    }
     public struct Tile
     {
         public Vector2 coordinates;
@@ -60,11 +72,35 @@ public class Tiler : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
+        instance = this;
         GenerateTiles();
     }
-    public void SpawnTile(int tile, GameObject prefab)
+    public int GetFreeTile(Vector2 coordinates, string key, float radius)
+    {
+        List<int> freeTiles = new List<int>();
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            // tiles that are touching the coordinates do not use the radius
+            Vector2 diff = tiles[i].coordinates - coordinates;
+            if(diff.x <= 1 && diff.y <= 1 && !tiles[i].data.ContainsKey(key))
+            {
+                freeTiles.Add(i);
+                continue;
+            }
+            else if (Vector3.Distance(tiles[i].center, tiles.Find(t => t.coordinates == coordinates).center) <= radius && !tiles[i].data.ContainsKey(key))
+            {
+                freeTiles.Add(i);
+            }
+        }
+        if (freeTiles.Count == 0)
+        {
+            return -1;
+        }
+        return freeTiles[Random.Range(0, freeTiles.Count)];
+    }
+    public Transform SpawnTile(int tile, GameObject prefab)
     {
         Tile t = tiles[tile];
         // for half, use the other prefab
@@ -72,6 +108,7 @@ public class Tiler : MonoBehaviour
         // rotate to look out from center
         go.transform.localPosition = t.center / transform.localScale.x;
         go.transform.localRotation = Quaternion.LookRotation(t.center) * Quaternion.Euler(90, 0, 0);
+        return go.transform;
     }
     public void SpawnTile(Vector2 coordinates, GameObject prefab)
     {
@@ -85,7 +122,6 @@ public class Tiler : MonoBehaviour
             for(int y = 0; y < divisions; y++)
             {
                 Vector3 center = GetSpherePoint(new Vector2(x, y)) * radius;
-                float offset = 0.1f;
                 tiles.Add(new Tile
                 {
                     data = new Dictionary<string, object>(),

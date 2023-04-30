@@ -33,14 +33,36 @@ public class Obstacle : MonoBehaviour
     }
     public (bool, ObstacleQuery) Query(Vector3 from, float originRadius)
     {
-        float distance = (transform.localPosition - from).sqrMagnitude * transform.parent.localScale.x / 2f;
-        if (distance <= Mathf.Pow((radius + originRadius), 2) / transform.parent.localScale.x)
+        float scale = transform.parent.localScale.x;
+        float distance = (transform.localPosition - from).sqrMagnitude * scale / 2f;
+        if (distance <= Mathf.Pow(radius + originRadius, 2) / scale)
         {
-            return (true, new ObstacleQuery(transform.localPosition, radius / transform.parent.localScale.x));
+            return (true, new ObstacleQuery(transform.localPosition, radius / scale));
         }
         return (false, new ObstacleQuery());
     }
-
+    public bool QueryNoReturn(Vector3 from, float originRadius)
+    {
+        float scale = transform.parent.localScale.x;
+        float distance = (transform.localPosition - from).sqrMagnitude * scale / 2f;
+        if (distance <= Mathf.Pow(radius + originRadius, 2) / scale)
+        {
+            return true;
+        }
+        return false;
+    }
+    public static bool QueryAllNoReturn(Vector3 from, float originRadius)
+    {
+        int count = 0;
+        for(int i = 0; i < obstacles.Count; i++)
+        {
+            if (obstacles[i].QueryNoReturn(from, originRadius))
+            {
+                count++;
+            }
+        }
+        return false;
+    }
     public static (int, ObstacleQuery[]) QueryAll(Vector3 from, float originRadius)
     {
         List<ObstacleQuery> queries = new List<ObstacleQuery>();

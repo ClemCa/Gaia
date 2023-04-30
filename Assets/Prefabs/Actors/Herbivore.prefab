@@ -598,7 +598,6 @@ GameObject:
   - component: {fileID: 6147876873679586677}
   - component: {fileID: 4989168546484980337}
   - component: {fileID: 1477820925984588372}
-  - component: {fileID: 4307872648170636199}
   m_Layer: 0
   m_Name: Herbivore
   m_TagString: HerbivoreMate
@@ -703,33 +702,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58cd70aa38a3a9748b188c752722b435, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   radius: 5
---- !u!114 &4307872648170636199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5279811246306103102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb73d4ffbc19aa641ac17f7193f248fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementScript: {fileID: 1477820925984588372}
-  destination: {fileID: 0}
-  stoppingDistance: 0.1
-  hp: 100
-  sleep: 50
-  food: 20
-  water: 50
-  mate: 50
-  carnivorous: 0
-  foodTag: Food
-  waterTag: Water
-  herbivoreMateTag: HerbivoreMate
-  carnivoreMateTag: CarnivoreMate
+  myRadius: 0.025
+  movementSpeed: 0.1
+  rotationSpeed: 10
+  pathfindingRefreshRate: 0.1
+  pathfindingPrecision: 0.05
+  pathfindingGranularity: 0.005
+  defaultOffset: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &5512041106863543837
 GameObject:
   m_ObjectHideFlags: 0

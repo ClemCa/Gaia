@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NPCMovement : MonoBehaviour
 {
-    [SerializeField] private Transform target;
     [SerializeField] private float radius = 10f;
     [SerializeField] private float myRadius = 0.5f;
     [SerializeField] private float movementSpeed = 1f;
@@ -12,23 +13,16 @@ public class NPCMovement : MonoBehaviour
     [SerializeField] private float pathfindingRefreshRate = 0.1f;
     [SerializeField] private float pathfindingPrecision = 0.1f;
     [SerializeField] private float pathfindingGranularity = 0.05f;
+    [SerializeField] private float pathfindingMaxIterations = 100;
     [SerializeField] private Quaternion defaultOffset = Quaternion.identity;
     private Vector3 lastDirection;
     void Start()
     {
         lastDirection = Vector3.Cross(transform.localPosition, Vector3.up).normalized;
-        if(target != null)
-        MoveTo(target.localPosition);
     }
-    void Update()
+    public void SetSpeed(float speed)
     {
-        // debug code
-        if(target != null)
-        {
-//            PlanPath(transform.localPosition, target.localPosition);
-        }
-        else
-            Move(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        movementSpeed = speed;
     }
     public void Place(Vector3 position)
     {
@@ -82,10 +76,33 @@ public class NPCMovement : MonoBehaviour
             forward = Vector3.Cross(up, Vector3.right).normalized;
         Place(transform.localPosition + (right * direction.x + forward * direction.y).normalized * movementSpeed * Time.deltaTime);
     }
+    public void Move(Vector2 direction, float distance)
+    {
+        Move(direction, distance, null);
+    }
+    public void Move(Vector2 direction, float distance, Action callback)
+    {
+        Vector3 up = transform.localPosition.normalized;
+        Vector3 right = Vector3.Cross(up, Vector3.back).normalized;
+        Vector3 forward = Vector3.Cross(-right, up).normalized;
+        if(right == Vector3.zero)
+            forward = Vector3.Cross(up, Vector3.right).normalized;
+        MoveTo(transform.localPosition + (right * direction.x + forward * direction.y).normalized * distance, callback);
+    }
     public void MoveTo(Vector3 position)
     {
         StopAllCoroutines();
         StartCoroutine(MoveCoroutine(position));
+    }
+    public void MoveTo(Vector3 position, Action callback)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveCoroutine(position, callback));
+    }
+    public void MoveTo(Transform target, Action callback)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MoveCoroutine(target, callback));
     }
     public void MoveTowards(Vector3 position)
     {
@@ -96,21 +113,24 @@ public class NPCMovement : MonoBehaviour
         float rightDot = Vector3.Dot(position - transform.localPosition, right);
         Move(new Vector2(rightDot, forwardDot).normalized);
     }
-    private IEnumerator MoveCoroutine(Vector3 position)
+    public void Stop()
     {
-        float refresh = 0;
-        List<Vector3> path = PlanPath(transform.localPosition, position);
-        path.RemoveAt(0); // remove current position
+        StopAllCoroutines();
+    }
+    private IEnumerator MoveCoroutine(Transform target, Action callback = null)
+    {
+        float refresh = -UnityEngine.Random.Range(0, pathfindingRefreshRate);
+        List<Vector3> path = PlanPath(transform.localPosition, target.localPosition).ToList();
         Vector3 nextPoint = path[0];
         while(true)
         {
             if(refresh > pathfindingRefreshRate)
             {
                 refresh = 0;
-                path = PlanPath(transform.localPosition, position);
-                path.RemoveAt(0); // remove current position
+                path = PlanPath(transform.localPosition, target.localPosition).ToList();
                 if(path.Count == 0)
                 {
+                    callback?.Invoke();
                     yield break;
                 }
                 nextPoint = path[0];
@@ -121,6 +141,46 @@ public class NPCMovement : MonoBehaviour
                 path.RemoveAt(0);
                 if(path.Count == 0)
                 {
+                    callback?.Invoke();
+                    yield break;
+                }
+                nextPoint = path[0];
+            }
+            MoveTowards(nextPoint);
+            yield return null;
+        }
+    }
+    private IEnumerator MoveCoroutine(Vector3 position, Action callback = null)
+    {
+        float refresh = -UnityEngine.Random.Range(0, pathfindingRefreshRate);
+        List<Vector3> path = PlanPath(transform.localPosition, position).ToList();
+        if(path.Count == 1)
+        {
+            path.Add(position);
+        }
+        path.RemoveAt(0); // remove current position
+        Vector3 nextPoint = path[0];
+        while(true)
+        {
+            if(refresh > pathfindingRefreshRate)
+            {
+                refresh = 0;
+                path = PlanPath(transform.localPosition, position).ToList();
+                path.RemoveAt(0); // remove current position
+                if(path.Count == 0)
+                {
+                    callback?.Invoke();
+                    yield break;
+                }
+                nextPoint = path[0];
+            }
+            refresh += Time.deltaTime;
+            if((transform.localPosition - nextPoint).sqrMagnitude < pathfindingGranularity * pathfindingGranularity)
+            {
+                path.RemoveAt(0);
+                if(path.Count == 0)
+                {
+                    callback?.Invoke();
                     yield break;
                 }
                 nextPoint = path[0];
@@ -130,63 +190,74 @@ public class NPCMovement : MonoBehaviour
         }
     }
 
-    private List<Vector3> PlanPath(Vector3 from, Vector3 to)
+    private Vector3[] PlanPath(Vector3 from, Vector3 to)
     {
-        List<Vector3> path = new List<Vector3>();
         float distance = (to - from).magnitude;
         int steps = Mathf.CeilToInt(distance / pathfindingPrecision);
         Vector3 previousStep = from;
+        Vector3[] path = new Vector3[steps];
+        float scaleFactor = radius / transform.parent.localScale.x;
+        int pathIndex = 0;
         for(int i = 1; i < steps; i++)
         {
             Vector3 position = Vector3.Lerp(from, to, (float)i / steps);
-            position = position.normalized * radius / transform.parent.localScale.x;
+            position = position.normalized * scaleFactor;
             (int count, Obstacle.ObstacleQuery[] queries) = Obstacle.QueryAll(position, myRadius);
             if(count == 0)
             {
-                path.Add(position);
+                path[pathIndex++] = position;
                 previousStep = position;
                 continue;
             }
             Vector3 normal = Vector3.zero;
-            while(count != 0)
+            foreach (Obstacle.ObstacleQuery query in queries)
             {
-                foreach (Obstacle.ObstacleQuery query in queries)
+                Vector3 obstacleDirection = (query.position - position).normalized;
+                float obstacleDistance = (query.position - position).magnitude;
+                float overlap = myRadius + query.radius - obstacleDistance;
+                normal -= obstacleDirection * overlap;
+            }
+            normal = normal.normalized;
+            Vector3 velocity = position - previousStep;
+            if(Vector3.Dot(normal, velocity) > 0)
+            {
+                path[pathIndex++] = position;
+                previousStep = position;
+                break;
+            }
+            Vector3 newDirection = Vector3.ProjectOnPlane(velocity, normal);
+            Vector3 right = Vector3.Cross(position, normal);
+            float rightDot = Vector3.Dot(newDirection, right);
+            if(rightDot < 0)
+                rightDot = -pathfindingGranularity;
+            else
+                rightDot = pathfindingGranularity;
+            newDirection = velocity + right * rightDot;
+            previousStep += newDirection;
+            count = 0;
+            while(count < pathfindingMaxIterations)
+            {
+                position = previousStep.normalized * scaleFactor;
+                if(!Obstacle.QueryAllNoReturn(position, myRadius))
                 {
-                    Vector3 obstacleDirection = (query.position - position).normalized;
-                    float obstacleDistance = (query.position - position).magnitude;
-                    float overlap = myRadius + query.radius - obstacleDistance;
-                    normal -= obstacleDirection * overlap;
-                }
-                normal = normal.normalized;
-                Vector3 velocity = position - previousStep;
-                if(Vector3.Dot(normal, velocity) > 0)
-                {
-                    path.Add(position);
-                    previousStep = position;
                     break;
                 }
-                Vector3 newDirection = Vector3.ProjectOnPlane(velocity, normal);
-                Vector3 right = Vector3.Cross(position, normal);
-                float rightDot = Vector3.Dot(newDirection, right);
-                if(rightDot < 0)
-                    rightDot = -pathfindingGranularity;
-                else
-                    rightDot = pathfindingGranularity;
-                newDirection = velocity + right * rightDot;
-                position = previousStep + newDirection;
-                position = position.normalized * radius / transform.parent.localScale.x;
-                (count, queries) = Obstacle.QueryAll(position, myRadius);
-                from = (to + (position - to).normalized * distance).normalized * radius / transform.parent.localScale.x;
             }
-            path.Add(position);
+            from = (to + (position - to).normalized * distance).normalized * scaleFactor;
+            path[pathIndex++] = position;
             previousStep = position;
         }
+        if(pathIndex == 0)
+        {
+            path[pathIndex++] = to;
+        }
         #if(UNITY_EDITOR)
-        for(int i = 0; i < path.Count - 1; i++)
+        for(int i = 0; i < pathIndex - 1; i++)
         {
             Debug.DrawLine(transform.parent.TransformPoint(path[i]), transform.parent.TransformPoint(path[i + 1]), Color.red, pathfindingRefreshRate);
         }
         #endif
+        Array.Resize(ref path, pathIndex);
         return path;
     }
 }

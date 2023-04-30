@@ -1913,6 +1913,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7292658344771522932}
   - component: {fileID: 3734775969355451150}
+  - component: {fileID: -5551384099194206919}
   m_Layer: 0
   m_Name: Carnivore
   m_TagString: Untagged
@@ -1957,6 +1958,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &-5551384099194206919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58cd70aa38a3a9748b188c752722b435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 5
+  myRadius: 0.025
+  movementSpeed: 0.1
+  rotationSpeed: 10
+  pathfindingRefreshRate: 0.1
+  pathfindingPrecision: 0.05
+  pathfindingGranularity: 0.005
+  defaultOffset: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0
