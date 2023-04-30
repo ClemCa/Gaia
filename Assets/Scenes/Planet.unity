@@ -6266,9 +6266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded4fa32ca0abc44c8f6c3587b3c81ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volumeSlider: {fileID: 0}
-  qualityDropdown: {fileID: 0}
-  fullscreenToggle: {fileID: 0}
+  volumeSlider: {fileID: 436424728}
+  qualityDropdown: {fileID: 920753050}
+  fullscreenToggle: {fileID: 1829505881}
 --- !u!224 &1993708336 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5710909743123812932, guid: a665c781301770146888b18f4b33c990, type: 3}
