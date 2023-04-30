@@ -2349,7 +2349,7 @@ PrefabInstance:
     - target: {fileID: 1641894701044487631, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
       propertyPath: m_text
       value: Plants in the target area will reproduce and grow twice faster for their
-        entire lifetime
+        and their descendants' lifetime
       objectReference: {fileID: 0}
     - target: {fileID: 7536656167270377900, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
       propertyPath: m_text

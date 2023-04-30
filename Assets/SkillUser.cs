@@ -77,7 +77,7 @@ public class SkillUser : MonoBehaviour
                             entity.Animation.SetAnimationState(NPCAnimation.AnimationState.Dead);
                             if (entity.Type is Nature.EntityType.Herbivore)
                             {
-                                if(entity.Age < entity.AdultAge)
+                                if (entity.Age < entity.AdultAge)
                                 {
                                     entity.Sounds.PlaySound(NPCSounds.Sounds.GoatBabyDead);
                                 }
@@ -96,13 +96,64 @@ public class SkillUser : MonoBehaviour
                 }
                 break;
             case 2:
-                // do something
+                {
+                    var targets = Nature.Instance.GetEntities((entity) =>
+                    {
+                        if (entity is not Nature.IWater water)
+                            return false;
+                        return Vector3.Distance(position, water.Transform.localPosition) <= radius;
+                    });
+                    foreach (var target in targets)
+                    {
+                        // 50% chance to kill
+                        if (Random.value < 0.5f)
+                        {
+                            var entity = Nature.Instance.Entities[target] as Nature.IWater;
+                            entity.Substance /= 2;
+                            Nature.Instance.Entities[target] = entity;
+                        }
+                    }
+                }
                 break;
             case 3:
-                // do something
+                {
+                    var targets = Nature.Instance.GetEntities((entity) =>
+                    {
+                        if (entity is not Nature.IPlant plant)
+                            return false;
+                        return Vector3.Distance(position, plant.Transform.localPosition) <= radius;
+                    });
+                    foreach (var target in targets)
+                    {
+                        // 50% chance to kill
+                        if (Random.value < 0.5f)
+                        {
+                            var entity = Nature.Instance.Entities[target] as Nature.IPlant;
+                            entity.ReproductionRate *= 2;
+                            Nature.Instance.Entities[target] = entity;
+                        }
+                    }
+                }
                 break;
             case 4:
-                // do something
+                {
+                    var targets = Nature.Instance.GetEntities((entity) =>
+                    {
+                        if (entity is not Nature.IWater water)
+                            return false;
+                        return Vector3.Distance(position, water.Transform.localPosition) <= radius;
+                    });
+                    foreach (var target in targets)
+                    {
+                        // 50% chance to kill
+                        if (Random.value < 0.5f)
+                        {
+                            var entity = Nature.Instance.Entities[target] as Nature.IWater;
+                            entity.Substance *= 2;
+                            Nature.Instance.Entities[target] = entity;
+                        }
+                    }
+                }
                 break;
             default:
                 break;
