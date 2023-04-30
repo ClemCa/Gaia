@@ -137,7 +137,7 @@ public class NPCMovement : MonoBehaviour
                 nextPoint = path[0];
             }
             refresh += Time.deltaTime;
-            if((transform.localPosition - nextPoint).sqrMagnitude < pathfindingGranularity * pathfindingGranularity)
+            if((transform.localPosition - nextPoint).sqrMagnitude < pathfindingPrecision * pathfindingGranularity)
             {
                 path.RemoveAt(0);
                 if(path.Count == 0)
