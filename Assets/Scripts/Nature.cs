@@ -284,7 +284,7 @@ public class Nature : MonoBehaviour
         if(entity is IPlant plant)
         {
             Tiler.Instance[plant.Coordinates].data["entity"] = plant.GUID;
-            plant.ReproductionProgress = UnityEngine.Random.Range(0, plant.ReproductionRate);
+            plant.ReproductionProgress = -UnityEngine.Random.Range(0, 1);
         }
         Entities.Add(entity);
         if(entity is IAnimal animal)

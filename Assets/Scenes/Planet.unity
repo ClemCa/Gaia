@@ -993,7 +993,7 @@ PrefabInstance:
     - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1516739414}
+      objectReference: {fileID: 1516739419}
     - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -1007,8 +1007,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: Play
+      objectReference: {fileID: 0}
+    - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1680720956253503326, guid: 31a250f241d32d84f877771fc64086cf, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
