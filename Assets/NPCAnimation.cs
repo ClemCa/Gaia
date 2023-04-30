@@ -25,7 +25,7 @@ public class NPCAnimation : MonoBehaviour
 
 	public void SetAnimationState(AnimationState state)
 	{
-		if (currentstate == state)
+		if (currentstate == state || IsOneWay(currentstate, state))
 		{
 			return; // Don't change the animation if it's already playing
 		}
@@ -33,4 +33,14 @@ public class NPCAnimation : MonoBehaviour
 		currentstate = state;
         animator.SetBool("is"+state.ToString(), true);
 	}
+
+    private bool IsOneWay(AnimationState fromState, AnimationState toState)
+    {
+        return fromState switch
+        {
+            AnimationState.Fleeing => toState == AnimationState.Moving,
+            AnimationState.Hunting => toState == AnimationState.Moving,
+            _ => false,
+        };
+    }
 }
