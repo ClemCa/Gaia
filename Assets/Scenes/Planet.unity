@@ -2319,6 +2319,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1641894701044487631, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Plants in the target area will reproduce and grow twice faster for their
+        entire lifetime
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536656167270377900, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Fertilizer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
 --- !u!224 &697262473 stripped
@@ -5322,6 +5331,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b93d2e79789a93b4f906405129830626, type: 3}
+    - target: {fileID: 1641894701044487631, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Animals in the target area will have 50% chances of dying
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536656167270377900, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Plague
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
 --- !u!224 &1641804029 stripped
@@ -5435,6 +5452,14 @@ PrefabInstance:
     - target: {fileID: 242928449866936547, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1641894701044487631, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Double the water in the target area
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536656167270377900, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Rain
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
@@ -6242,6 +6267,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b93d2e79789a93b4f906405129830626, type: 3}
+    - target: {fileID: 1641894701044487631, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Reduces the water in the target area by two
+      objectReference: {fileID: 0}
+    - target: {fileID: 7536656167270377900, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
+      propertyPath: m_text
+      value: Dry Season
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9309016017ecbfc4295b6848c5c8773f, type: 3}
 --- !u!224 &1957042193 stripped
