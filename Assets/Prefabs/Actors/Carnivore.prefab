@@ -1977,6 +1977,7 @@ MonoBehaviour:
   pathfindingRefreshRate: 0.1
   pathfindingPrecision: 0.05
   pathfindingGranularity: 0.005
+  pathfindingMaxIterations: 100
   defaultOffset: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &8002475675295336084
 GameObject:

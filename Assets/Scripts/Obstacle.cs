@@ -5,10 +5,14 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     [SerializeField] private float radius = 1f;
+    private Vector3 position;
+    private float parentScale;
     private static List<Obstacle> obstacles = new List<Obstacle>();
     void Awake()
     {
         obstacles.Add(this);
+        parentScale = transform.parent.localScale.x;
+        position = transform.localPosition;
     }
     void OnDestroy()
     {
@@ -33,20 +37,18 @@ public class Obstacle : MonoBehaviour
     }
     public (bool, ObstacleQuery) Query(Vector3 from, float originRadius)
     {
-        float scale = transform.parent.localScale.x;
-        float radiusSquared = Mathf.Pow(radius + originRadius, 2) / scale;
-        float distance = (transform.localPosition - from).sqrMagnitude * scale / 2f;
+        float radiusSquared = Mathf.Pow(radius + originRadius, 2) / parentScale;
+        float distance = (position - from).sqrMagnitude * parentScale / 2f;
         if (distance <= radiusSquared)
         {
-            return (true, new ObstacleQuery(transform.localPosition, radius / scale));
+            return (true, new ObstacleQuery(position, radius / parentScale));
         }
         return (false, new ObstacleQuery());
     }
     public bool QueryNoReturn(Vector3 from, float originRadius)
     {
-        float scale = transform.parent.localScale.x;
-        float distance = (transform.localPosition - from).sqrMagnitude * scale / 2f;
-        if (distance <= Mathf.Pow(radius + originRadius, 2) / scale)
+        float distance = (position - from).sqrMagnitude * parentScale / 2f;
+        if (distance <= Mathf.Pow(radius + originRadius, 2) / parentScale)
         {
             return true;
         }
@@ -55,7 +57,7 @@ public class Obstacle : MonoBehaviour
     public static bool QueryAllNoReturn(Vector3 from, float originRadius)
     {
         int count = 0;
-        for(int i = 0; i < obstacles.Count; i++)
+        for (int i = 0; i < obstacles.Count; i++)
         {
             if (obstacles[i].QueryNoReturn(from, originRadius))
             {
