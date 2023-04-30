@@ -885,9 +885,9 @@ MonoBehaviour:
   berryBushPrefab: {fileID: 1439904337943108576, guid: 1f115dd58f3bf824abedeb1063682f91, type: 3}
   numBerryBushesToSpawn: 50
   herbivores: {fileID: 5279811246306103102, guid: f5e6a247607d2f941a1dcacfdbc60294, type: 3}
-  numHerbivoresToSpawn: 1
+  numHerbivoresToSpawn: 50
   carnivorous: {fileID: 7962199819078159310, guid: ef43c07a47f446944adad0f2fc5f6d45, type: 3}
-  numCarnivorousToSpawn: 0
+  numCarnivorousToSpawn: 50
   seed: the seed
   defaultHerbivore:
     type: 1
